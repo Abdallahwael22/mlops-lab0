@@ -1,38 +1,18 @@
-import json
+import skore
 import os
-import pickle
+from src.logger import ExecutorLogger
 
-from skore import EstimatorReport
+def evaluate_model_with_skore(X, y, pipeline, model_name: str, reports_dir: str = "reports", logger: ExecutorLogger = None):
+    """Uses skore to cross-validate and track metrics for a specific pipeline."""
+    if logger is None:
+        logger = ExecutorLogger()
 
-MODEL_PATH = "models"
-REPORT_PATH = "reports"
-
-
-def evaluate(X_test, y_test, model_name: str, logger) -> None:
-    logger.info("loading model")
-    with open(os.path.join(MODEL_PATH, model_name, "final_model.pkl"), "rb") as pkl:
-        final_model = pickle.load(pkl)
-    with open(
-        os.path.join(MODEL_PATH, model_name, "model_target_translator.pkl"),
-        "rb",
-    ) as pkl:
-        translator = pickle.load(pkl)
-    y_test_enc = y_test.apply(lambda x: translator["encoder"][x])
-    final_report = EstimatorReport(final_model, X_test=X_test, y_test=y_test_enc)
-    logger.info("creating evaluation report")
-    evaluation_report = {
-        "model_name": model_name,
-        "estimator_name": final_report.estimator_name_,
-        "fitting_time": final_report.fit_time_,
-        "accuracy": final_report.metrics.accuracy(),
-        "precision": final_report.metrics.precision(),
-        "recall": final_report.metrics.recall(),
-        "prediction_time": final_report.metrics.timings(),
-    }
-    logger.info("saving evaluation report")
-    if not os.path.exists(os.path.join(REPORT_PATH, model_name)):
-        os.makedirs(os.path.join(REPORT_PATH, model_name))
-    with open(
-        os.path.join(REPORT_PATH, model_name, "evaluation_report.json"), "w"
-    ) as js:
-        json.dump(evaluation_report, js, indent=4)
+    logger.info(f"Setting up skore project in {reports_dir}")
+    os.makedirs(reports_dir, exist_ok=True)
+    
+    project_path = os.path.join(reports_dir, "titanic_skore_project")
+    project = skore.Project(project_path)
+    logger.info(f"Running skore cross-validation for optimized {model_name}")
+    report = skore.CrossValidationReport(pipeline, X, y)
+    project.put(f"{model_name}_optimized_report", report)
+    logger.info(f"Metrics for {model_name} tracked successfully in skore project.")

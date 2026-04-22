@@ -1,27 +1,30 @@
 import os
-import kagglehub
-import shutil
+from venv import logger
+from dotenv import load_dotenv
+load_dotenv()
+from kaggle.api.kaggle_api_extended import KaggleApi
+import zipfile
+from src.logger import ExecutorLogger
 
-RAW_DATA_DIR = os.path.join("data", "raw")
 
 
-def download_iris_data(logger) -> str:
-    logger.info("Downloading Iris dataset from Kaggle...")
+def download_titanic_data(download_path, logger) -> str:
 
-    path = kagglehub.dataset_download("uciml/iris")
+    logger.info("Downloading Titanic dataset from Kaggle...")
+    api=KaggleApi()
+    api.authenticate()
+    os.makedirs(download_path, exist_ok=True)
+    api.competition_download_files('titanic', path=download_path)
+    zip_file_path = os.path.join(download_path, 'titanic.zip')
+    with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
+        zip_ref.extractall(download_path)
+    os.remove(zip_file_path)
+    os.remove(os.path.join(download_path, 'gender_submission.csv'))
+    logger.info(f"Titanic dataset downloaded to {download_path}")
+    return download_path
 
-    files = os.listdir(path)
-    csv_files = [f for f in files if f.endswith(".csv")]
 
-    if not csv_files:
-        csv_files = files
-
-    os.makedirs(RAW_DATA_DIR, exist_ok=True)
-
-    destination = os.path.join(RAW_DATA_DIR, "Iris.csv")
-    source_file = os.path.join(path, csv_files[0])
-
-    shutil.copy(source_file, destination)
-
-    logger.info(f"Iris dataset downloaded to {destination}")
-    return destination
+if __name__ == "__main__":
+    logger = ExecutorLogger(level="INFO")
+    download_path = "data/raw/titanic"
+    download_titanic_data(download_path, logger)
