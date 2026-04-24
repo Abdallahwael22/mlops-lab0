@@ -1,0 +1,9 @@
+defaults:
+- model: "random_forest"
+- _self_
+
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  reports_dir: "reports"
+

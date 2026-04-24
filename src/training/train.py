@@ -18,11 +18,11 @@ def train_optimize_model(X_train, y_train, model_name: str, models_dir: str = "m
     preprocessor = preprocess_data(logger)
     
     def objective(trial):
-        if model_name == "random forest":
+        if model_name == "random_forest":
             n_estimators=trial.suggest_int("n_estimators",50,300)
             max_depth=trial.suggest_int("max_depth",4,20)
             model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, random_state=42)
-        elif model_name == "logistic regression":
+        elif model_name == "logistic_regression":
             c=trial.suggest_float("C", 0.01, 10.0, log=True)
             model = LogisticRegression(C=c, random_state=42)
         else:
@@ -40,9 +40,9 @@ def train_optimize_model(X_train, y_train, model_name: str, models_dir: str = "m
     study.optimize(objective, n_trials=5)
     logger.info(f"Best Optuna parameters found: {study.best_params}")
     
-    if model_name == "random forest":
+    if model_name == "random_forest":
         best_model = RandomForestClassifier(**study.best_params, random_state=42)
-    elif model_name == "logistic regression":
+    elif model_name == "logistic_regression":
         best_model = LogisticRegression(**study.best_params, random_state=42)
     best_pipeline=Pipeline(steps=[("name_extractor", FamilyNameExtractor()),
             ("preprocessor", preprocessor),

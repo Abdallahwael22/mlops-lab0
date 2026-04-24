@@ -1,0 +1,6 @@
+model:
+  model: logistic regression
+paths:
+  data_dir: data
+  models_dir: models
+  reports_dir: reports

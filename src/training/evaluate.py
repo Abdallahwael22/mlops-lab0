@@ -11,7 +11,7 @@ def evaluate_model_with_skore(X, y, pipeline, model_name: str, reports_dir: str 
     os.makedirs(reports_dir, exist_ok=True)
     
     project_path = os.path.join(reports_dir, "titanic_skore_project")
-    project = skore.Project(project_path)
+    project = skore.Project(project_path,if_exists='load')
     logger.info(f"Running skore cross-validation for optimized {model_name}")
     report = skore.CrossValidationReport(pipeline, X, y)
     project.put(f"{model_name}_optimized_report", report)

@@ -1,0 +1,6 @@
+model:
+  model: random_forest
+paths:
+  data_dir: data
+  models_dir: models
+  reports_dir: reports

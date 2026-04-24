@@ -1,0 +1,7 @@
+model:
+  model: logistic regression
+  n_trials: 10
+paths:
+  data_dir: data
+  models_dir: models
+  reports_dir: reports

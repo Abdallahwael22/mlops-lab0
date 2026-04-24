@@ -27,7 +27,8 @@ def preprocess_data(logger):
     categorical_features = ['Pclass', 'Sex', 'Embarked']
     string_features = ['Family_Name']
     
-    numeric_process= SimpleImputer(strategy='median')
+    numeric_process=SimpleImputer(strategy='median')
+
     categorical_process= Pipeline(steps=[
         ('imputer', SimpleImputer(strategy='most_frequent')),
         ('onehot', OneHotEncoder(handle_unknown='ignore'))

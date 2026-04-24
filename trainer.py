@@ -4,18 +4,18 @@ from src.training.download_data import download_titanic_data
 from src.training.process_data import load_split_data, preprocess_data
 from src.training.train import train_optimize_model
 from src.training.evaluate import evaluate_model_with_skore
+import hydra
+from omegaconf import DictConfig
+import warnings
+from sklearn.exceptions import ConvergenceWarning
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
-def main():
-    parser = argparse.ArgumentParser(description="Titanic MLOps Pipeline with Optuna")
-    parser.add_argument(
-        "--model", 
-        type=str, 
-        choices=["random forest", "logistic regression"], 
-        default="random forest",
-        help="Choose which model to tune, train, and evaluate."
-    )
-    args = parser.parse_args()
-    selected_model = args.model
+@hydra.main(version_base="1.3",config_path="conf", config_name="config")
+def main(cfg : DictConfig):
+    selected_model = cfg.model.model
+    data_path = cfg.paths.data_dir # Not used in the current code, but can be passed to functions if needed
+    models_path = cfg.paths.models_dir # Not used in the current code, but can be passed to functions if needed
+    reports_path = cfg.paths.reports_dir # Not used in the current code, but can be passed to functions if needed
 
     log = ExecutorLogger(logs_path="training_runs", level="INFO")
     
