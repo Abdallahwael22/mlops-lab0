@@ -1,0 +1,16 @@
+stages:
+  train_pipeline:
+    # 1. The command to run
+    cmd: uv run python trainer.py model=logistic_regression
+    
+    # 2. The dependencies (if these change, DVC knows it needs to rerun the pipeline)
+    deps:
+      - src/
+      - trainer.py
+      - conf/
+      
+    # 3. The outputs (DVC will track these massive folders automatically)
+    outs:
+      - data/
+      - models/
+      - reports/
