@@ -10,13 +10,13 @@ stages:
       nfiles: 4
     - path: src/
       hash: md5
-      md5: 1b7e339edda1ff5e59548901179f9d52.dir
-      size: 29208
+      md5: d24ed3bf2e695ba56d6cd4d7c5d930fb.dir
+      size: 29737
       nfiles: 16
     - path: trainer.py
       hash: md5
-      md5: e0670c56f0537835d875a6e0d129bd00
-      size: 2215
+      md5: 51e870d0765fa3b040826af96b585fa8
+      size: 2522
     outs:
     - path: data/
       hash: md5
@@ -25,11 +25,11 @@ stages:
       nfiles: 2
     - path: models/
       hash: md5
-      md5: 92a408d5da0c7191441be6a8bce54afb.dir
+      md5: 8b1d11e4cc8a0be7399a6a4a1d5ef3b3.dir
       size: 13466
       nfiles: 1
     - path: reports/
       hash: md5
-      md5: 392c96c5e7b5460552e445fd794f6df2.dir
-      size: 357328
+      md5: 42188ae9e40257c37f74de427e338dad.dir
+      size: 357324
       nfiles: 2

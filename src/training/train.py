@@ -3,6 +3,7 @@ import joblib
 import pickle
 import numpy as np
 import optuna
+import mlflow
 from src.training.process_data import FamilyNameExtractor, preprocess_data
 from sklearn.model_selection import cross_validate
 from sklearn.pipeline import Pipeline
@@ -39,6 +40,8 @@ def train_optimize_model(X_train, y_train, model_name: str, models_dir: str = "m
     study=optuna.create_study(direction="maximize")
     study.optimize(objective, n_trials=5)
     logger.info(f"Best Optuna parameters found: {study.best_params}")
+    mlflow.log_params(study.best_params)
+    mlflow.log_metric("best_score", study.best_value)
     
     if model_name == "random_forest":
         best_model = RandomForestClassifier(**study.best_params, random_state=42)
@@ -52,5 +55,5 @@ def train_optimize_model(X_train, y_train, model_name: str, models_dir: str = "m
     model_path = os.path.join(models_dir, f"{model_name.replace(' ', '_')}_model.pkl")
     joblib.dump(best_pipeline, model_path)
     logger.info(f"Best {model_name} model saved to {model_path}")
-    
+    mlflow.sklearn.log_model(best_pipeline, artifact_path="models")
     return best_pipeline
