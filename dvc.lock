@@ -1,7 +1,7 @@
 schema: '2.0'
 stages:
   train_pipeline:
-    cmd: uv run python trainer.py model=logistic_regression
+    cmd: uv run python trainer.py model=random_forest
     deps:
     - path: conf/
       hash: md5
@@ -10,13 +10,13 @@ stages:
       nfiles: 4
     - path: src/
       hash: md5
-      md5: d24ed3bf2e695ba56d6cd4d7c5d930fb.dir
+      md5: 2204c249846716dc59327727486bc6c2.dir
       size: 29737
       nfiles: 16
     - path: trainer.py
       hash: md5
-      md5: 51e870d0765fa3b040826af96b585fa8
-      size: 2522
+      md5: a52d1d8132ca2db1863d285ea23a5f86
+      size: 2934
     outs:
     - path: data/
       hash: md5
@@ -25,11 +25,11 @@ stages:
       nfiles: 2
     - path: models/
       hash: md5
-      md5: 8b1d11e4cc8a0be7399a6a4a1d5ef3b3.dir
-      size: 13466
+      md5: 4e725b9e8c004f5a018d33e21ed152cf.dir
+      size: 1593803
       nfiles: 1
     - path: reports/
       hash: md5
-      md5: 42188ae9e40257c37f74de427e338dad.dir
-      size: 357324
+      md5: a0a51e0e8df22b954dd5e3fe4b1f06a4.dir
+      size: 7486776
       nfiles: 2

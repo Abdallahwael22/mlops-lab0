@@ -1,5 +1,7 @@
 import argparse
+import os
 import mlflow
+import dagshub
 from src.logger import ExecutorLogger
 from src.training.download_data import download_titanic_data
 from src.training.process_data import load_split_data, preprocess_data
@@ -20,8 +22,15 @@ def main(cfg : DictConfig):
     reports_path = cfg.paths.reports_dir # Not used in the current code, but can be passed to functions if needed
 
     log = ExecutorLogger(logs_path="training_runs", level="INFO")
-    
     log.info(f"Starting Titanic Pipeline for: {selected_model}")
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "abdallahwael082"
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "0ce0281adf60193dd06e4ca2190e4624021a1d69"
+    tracking_uri = os.environ.get(
+        "MLFLOW_TRACKING_URI",
+        "https://dagshub.com/abdallahwael082/mlops-lab0.mlflow",
+    )
+    mlflow.set_tracking_uri(tracking_uri)
+    log.info(f"Using MLflow tracking server: {tracking_uri}")
     mlflow.set_experiment("titanic_project")
     
     try:

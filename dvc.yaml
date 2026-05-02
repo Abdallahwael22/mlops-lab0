@@ -1,7 +1,7 @@
 stages:
   train_pipeline:
     # 1. The command to run
-    cmd: uv run python trainer.py model=logistic_regression
+    cmd: uv run python trainer.py model=random_forest 
     
     # 2. The dependencies (if these change, DVC knows it needs to rerun the pipeline)
     deps:
