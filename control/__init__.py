@@ -1,0 +1,2 @@
+from control.Passenger import Passenger
+from control.BatchPredictionRequest import BatchPredictionRequest
